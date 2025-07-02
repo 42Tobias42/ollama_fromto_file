@@ -1,6 +1,8 @@
 from ollama import chat
 from ollama import ChatResponse
 
+import file
+
 
 
 def prompt_to_file(model:str, system_prompt_path: str = 'system_prompt.txt',prompt_path: str = 'prompt.txt'):
@@ -36,8 +38,10 @@ def prompt_to_file(model:str, system_prompt_path: str = 'system_prompt.txt',prom
 
 
 
-model = input('model name:')
-prompt_to_file(model)
+#model = input('model name:')
+#prompt_to_file(model)
+
+print(file.read_file("files/prompt.txt",'_',None))
     
 
     

@@ -8,19 +8,26 @@ from tqdm import tqdm
 
 
 
-def load_system_prompt(path:str = 'system_prompt.txt'):
+def load_system_prompt(path:str = 'files/system_prompt.txt'):
     system_prompt = file.read_file(path,'',None)
     return system_prompt
 
-def load_prompts(path:str = 'prompt.txt',seperator:str = '_'):
+def load_prompts(path:str = 'files/prompt.txt',seperator:str = '_'):
     prompts = file.read_file(path,seperator,None)
     return prompts
 
 def generate_prompt(role:str,content:str):
     return {'role':role, 'content': content}
 
-def run_LLM():
+def generate_response(model:str,role:str,content:str,system_prompt:str|None)->ChatResponse:
+    if system_prompt is not None:    
+        return chat(model=model,messages= [generate_prompt('system',system_prompt),generate_prompt(role,content)],think=False)
+    else: 
+        return chat(model=model,messages= [generate_prompt(role,content)],think=False)
 
+
+def run_LLM():
+    
     #collect information
     model = input('model name:')
     conversation_name = input('conversation name:')
@@ -34,6 +41,8 @@ def run_LLM():
     else:
         system_prompt = load_system_prompt(system_prompt_path)
     
+    if system_prompt == '': system_prompt = None
+    
 
     if prompt_path == '':
         prompts = load_prompts()
@@ -45,11 +54,21 @@ def run_LLM():
     else:
         conversation_path = f'files/conversations/{conversation_name}.txt'
         file.create_file(conversation_path)
-    
-    #pass system prompt
-    chat(model,messages=[generate_prompt('system',system_prompt)])
+
 
     for prompt in tqdm(prompts,'prompting:'):
-        response:ChatResponse = chat(model,messages=[generate_prompt('user',prompt)])
+        response = generate_response(model,'user',prompt,system_prompt)
+        file.write_file(conversation_path,prompt,response.message.content)
+
+    print(f'all file-prompts prompted')
+
+    while True:
+        prompt = input("prompt:")
+        if prompt == 'exit': break
+
+        response = generate_response(model,'user',prompt,system_prompt)
+        file.write_file(conversation_path,prompt,response.message.content)
+
+
 
 

@@ -10,7 +10,7 @@ def text_to_speech(text:str , seed:int|None):
     seed: not implemented
     '''
     
-    model = Dia.from_pretrained("nari-labs/Dia-1.6B")
+    model = Dia.from_pretrained()
 
     output = model.generate(text)
 

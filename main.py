@@ -45,7 +45,7 @@ def prompt_to_file(model:str, system_prompt_path: str = 'system_prompt.txt',prom
 
 
 text = "[S1] Dia is an open weights text to dialogue model. [S2] You get full control over scripts and voices. [S1] Wow. Amazing. (laughs) [S2] Try it now on Git hub or Hugging Face."
-tts.text_to_speech(text)
+tts.text_to_speech(text,None)
 
 LLM.run_LLM()
 

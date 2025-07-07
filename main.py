@@ -2,6 +2,7 @@ from ollama import chat
 from ollama import ChatResponse
 
 import file
+import texttospeech as tts
 import LLM_handler as LLM
 
 
@@ -43,8 +44,11 @@ def prompt_to_file(model:str, system_prompt_path: str = 'system_prompt.txt',prom
 #prompt_to_file(model)
 
 
+text = "[S1] Dia is an open weights text to dialogue model. [S2] You get full control over scripts and voices. [S1] Wow. Amazing. (laughs) [S2] Try it now on Git hub or Hugging Face."
+tts.text_to_speech(text)
 
 LLM.run_LLM()
+
 
     
 
